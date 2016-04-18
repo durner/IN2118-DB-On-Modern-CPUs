@@ -1,3 +1,5 @@
+all: 			clean gen sort
+
 clean:
 			rm -rf ./bin
 
@@ -7,4 +9,4 @@ gen:
 
 sort:
 			@mkdir -p bin
-			g++ -Wall -march=native -std=c++11 -g -O3 -o bin/sort src/external_merge_sort.cpp
+			g++ -Wall -march=native -std=c++11 -g -O3 -Iinclude -o bin/sort test/sort.cpp src/external_merge_sort.cpp
