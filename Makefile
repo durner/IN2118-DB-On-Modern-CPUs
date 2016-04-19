@@ -1,7 +1,11 @@
-all: 			clean gen sort
+all:		clean gen sort buffer
 
 clean:
 			rm -rf ./bin
+
+buffer:
+			@mkdir -p bin
+			g++ -Wall -Werror -march=native -std=c++11 -g -O3 -Iinclude -o bin/buffer test/buffer.cpp src/buffer_manager.cpp
 
 gen:
 			@mkdir -p bin
@@ -9,4 +13,4 @@ gen:
 
 sort:
 			@mkdir -p bin
-			g++ -Wall -march=native -std=c++11 -g -O3 -Iinclude -o bin/sort test/sort.cpp src/external_merge_sort.cpp
+			g++ -Wall -Werror -march=native -std=c++11 -g -O3 -Iinclude -o bin/sort test/sort.cpp src/external_merge_sort.cpp
