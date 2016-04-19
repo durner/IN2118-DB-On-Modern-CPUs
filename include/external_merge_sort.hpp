@@ -13,26 +13,22 @@
 
 namespace IN2118 {
 
-template<typename ElementType>
+template <typename ElementType>
 struct CQueueElement {
-  ElementType value;
-  int buffer_index;
+    ElementType value;
+    int buffer_index;
 
-  bool operator < (const CQueueElement<ElementType>& qe) const {
-    return qe.value < value;
-  }
+    bool operator<(const CQueueElement<ElementType>& qe) const { return qe.value < value; }
 
-  bool operator == (const CQueueElement<ElementType>& qe) const {
-    return qe.value == value;
-  }
+    bool operator==(const CQueueElement<ElementType>& qe) const { return qe.value == value; }
 };
 
-template<typename ElementType>
+template <typename ElementType>
 struct CValueBuffer {
-  ElementType* buffer;
-  int file_index;
-  int buffer_offset;
-  int buffer_length;
+    ElementType* buffer;
+    int file_index;
+    int buffer_offset;
+    int buffer_length;
 };
 
 void ExternalSort(int fd_input, uint64_t size, int fd_output, uint64_t mem_size);
