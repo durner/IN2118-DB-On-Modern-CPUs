@@ -13,29 +13,27 @@ namespace IN2118 {
 
 class CBufferFrame {
 public:
+    uint64_t getPageId();
     void* getData();
     void lock(bool exclusie);
-    void unlock();
+    void unlock(bool is_dirty);
     void storeOnDisk();
     CBufferFrame(int fd, uint64_t page_id);
     ~CBufferFrame();
 
 private:
-    void* data;
+    void* _data;
 
     // latch mutex
-    pthread_rwlock_t latch;
+    pthread_rwlock_t _latch;
 
-    uint64_t lsn;
-
-    uint64_t page_id; // page id
-    int fd; // file descriptor of the segment
-    off_t offset; // offset in the file
+    uint64_t _page_id; // page id
+    int _fd; // file descriptor of the segment
+    off_t _offset; // offset in the file
 
     // after unfixing the page may be fixed again but already dirty. Hence, we need to write the page first.
-    bool is_dirty = 0;
-    bool is_fixed = 0;
-    bool in_buffer = 0;
+    bool _is_dirty = 0;
+    bool _in_buffer = 0;
 };
 
 }; // ns
