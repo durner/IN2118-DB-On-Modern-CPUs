@@ -23,10 +23,10 @@ private:
 
     std::unordered_map<uint64_t, CBufferFrame*> _frame_map; // O(1) to get from page_id to Buffer!
     std::unordered_map<uint64_t, int> _fd_map; // O(1) to get fd from page_id
-    std::list<CBufferFrame*> _lru_list;
+    std::list<uint64_t> _lru_list;
 
     pthread_mutex_t _lru_mutex;
-    pthread_rwlock_t _hashmap_lock;
+    pthread_mutex_t _hashmap_lock;
 };
 
 }; // ns
