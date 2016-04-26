@@ -2,14 +2,12 @@
 
 namespace IN2118 {
 
-CBufferManager::CBufferManager(unsigned page_count)
-{
-    _buffer_frames = new CBufferFrame[page_count];
-}
+CBufferManager::CBufferManager(unsigned page_count) {}
 
 CBufferFrame& CBufferManager::fixPage(uint64_t page_id, bool exclusive)
 {
-    return *_buffer_frames;
+    CBufferFrame* bf = new CBufferFrame(0, page_id);
+    return *bf;
 }
 
 void CBufferManager::unfixPage(CBufferFrame& frame, bool is_dirty) {}
