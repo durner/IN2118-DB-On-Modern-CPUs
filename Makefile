@@ -5,7 +5,7 @@ clean:
 
 buffer:
 			@mkdir -p bin
-			g++ -Wall -Werror -march=native -std=c++11 -g -O3 -Iinclude -o bin/buffer test/buffer.cpp src/buffer_manager.cpp
+			g++ -Wall -Werror -march=native -std=c++11 -g -O3 -Iinclude -o bin/buffer test/buffer.cpp src/buffer_frame.cpp src/buffer_manager.cpp -lpthread
 
 gen:
 			@mkdir -p bin

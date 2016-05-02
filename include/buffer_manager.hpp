@@ -1,30 +1,14 @@
 #pragma once
 
+#include "buffer_frame.hpp"
+
 #include <stdint.h>
 #include <stdio.h>
-#include <fcntl.h>
-#include <iostream>
-#include <unistd.h>
 #include <pthread.h>
 #include <unordered_map>
+#include <list>
 
 namespace IN2118 {
-
-struct CBufferFrame {
-    void* data;
-
-    // latch mutex
-    pthread_rwlock_t latch;
-
-    uint64_t lsn;
-    uint64_t page_id;
-
-    // after unfixing the page may be fixed again but already dirty. Hence, we need to write the page first.
-    bool dirty;
-    bool fixed;
-
-    void* getData() { return data; }
-};
 
 class CBufferManager {
 public:
@@ -34,9 +18,15 @@ public:
     ~CBufferManager();
 
 private:
-    CBufferFrame* _buffer_frames;
-    pthread_mutex_t _hashtable_lock;
+    int _buffer_count;
+    int _max_count;
 
+    std::unordered_map<uint64_t, CBufferFrame*> _frame_map; // O(1) to get from page_id to Buffer!
+    std::unordered_map<uint64_t, int> _fd_map; // O(1) to get fd from page_id
+    std::list<uint64_t> _lru_list;
+
+    pthread_mutex_t _lru_mutex;
+    pthread_mutex_t _hashmap_lock;
 };
 
 }; // ns
