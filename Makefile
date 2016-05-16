@@ -1,7 +1,12 @@
-all:		clean gen sort buffer
+all:		clean gen sort buffer pages
 
 clean:
 			rm -rf ./bin
+
+pages:
+			@mkdir -p bin
+			# fsanitize=address
+			g++ -Wall -Werror -march=native -std=c++11 -g -O0 -Iinclude -o bin/slotted_pages test/slotted_test.cpp src/slotted_page.cpp src/sp_segmnet.cpp include/schema/record.cpp src/buffer_frame.cpp src/buffer_manager.cpp -lpthread
 
 buffer:
 			@mkdir -p bin

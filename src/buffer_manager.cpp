@@ -13,7 +13,9 @@ CBufferManager::CBufferManager(unsigned page_count)
 CBufferFrame& CBufferManager::fixPage(uint64_t page_id, bool exclusive)
 {
     CBufferFrame* buffer_frame;
-
+#if DEBUG
+    printf("FIX:\t%lX\n", page_id);
+#endif
     pthread_mutex_lock(&this->_hashmap_lock);
 
     auto find_result = this->_frame_map.find(page_id);
@@ -77,7 +79,9 @@ CBufferFrame& CBufferManager::fixPage(uint64_t page_id, bool exclusive)
 void CBufferManager::unfixPage(CBufferFrame& frame, bool is_dirty)
 {
     uint64_t frame_id = frame.getPageId();
-
+#if DEBUG
+    printf("UNFIX:\t%lX\n", frame_id);
+#endif
     if (is_dirty)
         frame.setDirty();
 

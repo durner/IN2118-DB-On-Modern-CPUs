@@ -9,7 +9,8 @@
 
 namespace IN2118 {
 
-#define page_size 4096
+const int PAGE_SIZE = 4*4096;
+#define page_size 4*4096
 
 class CBufferFrame {
 public:
