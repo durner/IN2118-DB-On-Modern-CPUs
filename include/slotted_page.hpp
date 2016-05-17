@@ -20,15 +20,15 @@ const uint16_t HEADER_SIZE = sizeof(CSlottedPageHeader);
 const uint16_t DATA_SIZE = PAGE_SIZE - HEADER_SIZE;
 
 struct CSlot {
-    uint16_t _offset;
-    uint16_t _length;
+    uint16_t _offset = 0;
+    uint16_t _length = PAGE_SIZE;
 
 public:
-    bool IsFree() { return _offset == 0 && _length == 0; }
+    bool IsFree() { return _offset == 0 && _length == PAGE_SIZE; }
     void Delete()
     {
         _offset = 0;
-        _length = 0;
+        _length = PAGE_SIZE;
     }
 };
 
@@ -50,8 +50,10 @@ public:
 
     bool IsFree(uint16_t size);
     uint16_t Allocate(uint16_t size);
+    uint16_t Allocate(uint16_t size, uint16_t slot_id);
     void Store(uint16_t slot_id, const char* data);
     void Delete(uint16_t slot_id);
+    void Redirect(uint16_t slot_id, TID tid);
 
     char* GetData(uint16_t slot_id);
     uint16_t GetLength(uint16_t slot_id);

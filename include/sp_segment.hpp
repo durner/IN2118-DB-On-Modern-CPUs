@@ -23,13 +23,10 @@ public:
     Record lookup(TID tid);
     // Returns the read-only record (Record.hpp) associated with TID tid.
 
-    bool update(TID tid, const Record& r);
+    bool update(TID tid, const Record r);
     // Updates the record pointed to by tid with the content of record r.
 
     CSPSegment(uint16_t segment_id, CBufferManager& buffer_manager);
-
-private:
-    uint64_t _page_number = 0;
 };
 
 }; // ns

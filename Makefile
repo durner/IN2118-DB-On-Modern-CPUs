@@ -5,8 +5,7 @@ clean:
 
 pages:
 			@mkdir -p bin
-			# fsanitize=address
-			g++ -Wall -Werror -march=native -std=c++11 -g -O0 -Iinclude -o bin/slotted_pages test/slotted_test.cpp src/slotted_page.cpp src/sp_segmnet.cpp include/schema/record.cpp src/buffer_frame.cpp src/buffer_manager.cpp -lpthread
+			g++ -Wall -Werror -march=native -std=c++11 -g -O3 -Iinclude -o bin/slotted_pages test/slotted_test.cpp src/slotted_page.cpp src/sp_segmnet.cpp include/schema/record.cpp src/schema_segment.cpp src/buffer_frame.cpp src/buffer_manager.cpp -lpthread
 
 buffer:
 			@mkdir -p bin

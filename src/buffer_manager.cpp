@@ -22,8 +22,7 @@ CBufferFrame& CBufferManager::fixPage(uint64_t page_id, bool exclusive)
     if (find_result != this->_frame_map.end()) {
         buffer_frame = find_result->second;
         pthread_mutex_lock(&this->_lru_mutex);
-        if (buffer_frame->_number_of_locks == 0)
-            this->_lru_list.remove(buffer_frame->getPageId());
+        this->_lru_list.remove(buffer_frame->getPageId());
         buffer_frame->_number_of_locks++;
         pthread_mutex_unlock(&this->_lru_mutex);
     }
@@ -54,6 +53,7 @@ CBufferFrame& CBufferManager::fixPage(uint64_t page_id, bool exclusive)
             this->_lru_list.pop_back();
             auto find_result = this->_frame_map.find(evict_id);
             CBufferFrame* evict = find_result->second;
+            evict->storeOnDisk();
             this->_frame_map.erase(evict_id);
             delete evict;
         }

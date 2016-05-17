@@ -22,6 +22,7 @@ public:
     CBufferFrame(int fd, uint64_t page_id);
     ~CBufferFrame();
     int _number_of_locks;
+    void storeOnDisk();
 
 private:
     void* _data;
@@ -34,8 +35,6 @@ private:
     off_t _offset; // offset in the file
 
     bool _is_dirty = 0;
-
-    void storeOnDisk();
 };
 
 }; // ns

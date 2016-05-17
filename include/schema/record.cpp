@@ -1,4 +1,5 @@
 #include "schema/record.hpp"
+#include <iostream>
 
 Record::Record(Record&& t)
     : len(t.len)

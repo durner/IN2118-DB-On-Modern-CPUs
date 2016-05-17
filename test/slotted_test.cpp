@@ -8,6 +8,8 @@
 #include "schema/record.hpp"
 #include "sp_segment.hpp" // include your stuff here
 
+// #define DEBUG 1
+
 using namespace IN2118;
 using namespace std;
 
@@ -83,7 +85,7 @@ int main(int argc, char** argv)
     unordered_map<unsigned, unsigned> usage; // pageID -> bytes used within this page
 
     // Setting everything
-    CBufferManager bm(10);
+    CBufferManager bm(500);
     CSPSegment sp(1, bm);
     Random64 rnd;
 
@@ -121,7 +123,6 @@ int main(int argc, char** argv)
         assert(pageId < initialSize); // pageId should be within [0, initialSize)
         usage[pageId] += s.size();
     }
-    std::cout << "VALUES: " << values.size() << " \t-\t " << maxInserts <<" vs. " << maxDeletes << "\tk:" << k << std::endl;
     // Lookup & delete some records
     for (unsigned i = 0; i < maxDeletes; ++i) {
         // Select operation
@@ -147,7 +148,7 @@ int main(int argc, char** argv)
             usage[pageId] -= len;
         }
     }
-/*
+
     // Update some values ('usage' counter invalid from here on)
     for (unsigned i = 0; i < maxUpdates; ++i) {
         // Select victim
@@ -160,7 +161,7 @@ int main(int argc, char** argv)
         // Replace old with new value
         sp.update(tid, Record(s.size(), s.c_str()));
         values[tid] = r;
-    }*/
+    }
 
     // Lookups
     for (auto p : values) {
