@@ -9,7 +9,8 @@
 
 namespace IN2118 {
 
-#define page_size 4096
+const int PAGE_SIZE = 4*4096;
+#define page_size 4*4096
 
 class CBufferFrame {
 public:
@@ -21,6 +22,7 @@ public:
     CBufferFrame(int fd, uint64_t page_id);
     ~CBufferFrame();
     int _number_of_locks;
+    void storeOnDisk();
 
 private:
     void* _data;
@@ -33,8 +35,6 @@ private:
     off_t _offset; // offset in the file
 
     bool _is_dirty = 0;
-
-    void storeOnDisk();
 };
 
 }; // ns
