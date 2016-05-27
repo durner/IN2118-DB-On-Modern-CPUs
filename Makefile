@@ -3,6 +3,10 @@ all:		clean gen sort buffer pages
 clean:
 			rm -rf ./bin
 
+btree:
+			@mkdir -p bin
+			g++ -Wall -Werror -march=native -std=c++11 -g -O3 -Iinclude -o bin/btree test/btree_test.cpp src/b_plus_tree.cpp include/schema/record.cpp src/buffer_frame.cpp src/buffer_manager.cpp -lpthread
+
 pages:
 			@mkdir -p bin
 			g++ -Wall -Werror -march=native -std=c++11 -g -O3 -Iinclude -o bin/slotted_pages test/slotted_test.cpp src/slotted_page.cpp src/sp_segmnet.cpp include/schema/record.cpp src/schema_segment.cpp src/buffer_frame.cpp src/buffer_manager.cpp -lpthread
