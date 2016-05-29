@@ -12,6 +12,7 @@
 
 using namespace IN2118;
 
+
 /* Comparator functor for uint64_t*/
 struct MyCustomUInt64Cmp {
     bool operator()(uint64_t a, uint64_t b) const { return a < b; }
@@ -73,18 +74,17 @@ template <class T, class CMP>
 void test(uint64_t n)
 {
     // Set up stuff, you probably have to change something here to match to your interfaces
-    CBufferManager bm(1000);
+    CBufferManager bm(100);
     // ...
-    CBPlusTree<T, CMP> bTree(bm, 2);
+    CBPlusTree<T, CMP> bTree(bm, 4);
 
     // Insert values
     for (uint64_t i = 0; i < n; ++i) {
         TID tid_insert{ i, (uint32_t)i };
         bTree.insert(getKey<T>(i), tid_insert);
     }
-    std::cout << bTree.GetSize() << " vs. " << n << std::endl;
-
-    // assert(bTree.GetSize() == (int64_t) n);
+    std::cout << "Size Check Completed: " << bTree.size() << std::endl;
+    assert(bTree.size() == (uint64_t)n);
 
     // Check if they can be retrieved
     for (uint64_t i = 0; i < n; ++i) {
@@ -94,10 +94,14 @@ void test(uint64_t n)
         assert(tid == tid_insert);
     }
 
+    std::cout << "Retrieve Check Completed" << std::endl;
+
+
     // Delete some values
     for (uint64_t i = 0; i < n; ++i)
-        if ((i % 7) == 0)
+        if ((i % 7) == 0) {
             bTree.erase(getKey<T>(i));
+        }
 
     // Check if the right ones have been deleted
     for (uint64_t i = 0; i < n; ++i) {
@@ -112,11 +116,14 @@ void test(uint64_t n)
         }
     }
 
+    std::cout << "Delete Check Completed" << std::endl;
+
     // Delete everything
     for (uint64_t i = 0; i < n; ++i)
         bTree.erase(getKey<T>(i));
-    std::cout << bTree.GetSize() << std::endl;
-    assert(bTree.GetSize() == 0);
+    assert(bTree.size() == 0);
+
+    std::cout << "SUCCESS" << std::endl;
 }
 
 int main(int argc, char* argv[])
