@@ -3,7 +3,7 @@
 #include "register.hpp"
 #include <ostream>
 #include <vector>
-
+#include <unordered_map>
 
 namespace IN2118 {
 
@@ -12,11 +12,8 @@ private:
     char chars[8];
 
 public:
-    std::string str() const {
-        return std::string{chars, 8};
-    }
+    std::string str() const { return std::string{ chars, 8 }; }
 };
-
 
 class Operator {
 public:
@@ -26,10 +23,9 @@ public:
     virtual void close() = 0;
 };
 
-
 class Print : public Operator {
 public:
-    enum class print_mode {UINT, STR};
+    enum class print_mode { UINT, STR };
 
 private:
     Operator* input;
@@ -37,16 +33,18 @@ private:
     print_mode mode;
 
 public:
-    Print(Operator* input, std::ostream* stream,
-          const print_mode mode = print_mode::UINT)
-    : input(input), stream(stream), mode(mode) {}
+    Print(Operator* input, std::ostream* stream, const print_mode mode = print_mode::UINT)
+        : input(input)
+        , stream(stream)
+        , mode(mode)
+    {
+    }
 
     virtual void open();
     virtual bool next();
     virtual std::vector<Register> getOutput();
     virtual void close();
 };
-
 
 class TableScan : public Operator {
 private:
@@ -56,10 +54,13 @@ private:
     size_t pos;
 
 public:
-    TableScan(const char* relation, const size_t num_tuples,
-              const size_t num_attributes)
-    : relation(relation), num_tuples(num_tuples),
-      num_attributes(num_attributes), pos(0) {}
+    TableScan(const char* relation, const size_t num_tuples, const size_t num_attributes)
+        : relation(relation)
+        , num_tuples(num_tuples)
+        , num_attributes(num_attributes)
+        , pos(0)
+    {
+    }
 
     virtual void open();
     virtual bool next();
@@ -67,4 +68,26 @@ public:
     virtual void close();
 };
 
+class HashJoin : public Operator {
+private:
+    Operator* _input_left;
+    Operator* _input_right;
+    unsigned _register_left;
+    unsigned _register_right;
+    std::unordered_multimap<Register, std::vector<Register>> map;
+
+public:
+    HashJoin(Operator* input_left, Operator* input_right, unsigned register_left, unsigned register_right)
+        : _input_left(input_left)
+        , _input_right(input_right)
+        , _register_left(register_left)
+        , _register_right(register_right)
+    {
+    }
+
+    virtual void open();
+    virtual bool next();
+    std::vector<Register> getOutput();
+    virtual void close();
+};
 };

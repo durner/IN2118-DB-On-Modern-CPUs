@@ -46,6 +46,27 @@ public:
         memcpy(r.value, value, 8);
         return r;
     }
+
+    bool operator==(const Register& reg) const { 
+        for (int i = 0; i < 8; i++) {
+            if (reg.value[i] != value[i])
+                return false;
+        }
+        return true;
+    }
+
+    unsigned getHash() const {
+        uint64_t typvalue;
+        memcpy(&typvalue, value, 8);
+        return typvalue;
+    }
+
+};
 };
 
+namespace std {
+template <>
+struct hash<IN2118::Register> {
+    unsigned operator()(const IN2118::Register& r) const { return r.getHash(); };
+};
 };

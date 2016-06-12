@@ -56,4 +56,25 @@ std::vector<Register> TableScan::getOutput() {
 void TableScan::close() {
 }
 
+void HashJoin::open() {
+    _input_left->open();
+    _input_right->open();
+
+    // create the hashmap
+    while (_input_left->next()) {
+        std::vector<Register> regs = _input_left->getOutput();
+        map.insert({regs[_register_left], regs});
+    }
+}
+
+void HashJoin::close() {}
+bool HashJoin::next() {
+    return false;
+}
+
+std::vector<Register> HashJoin::getOutput() {
+    std::vector<Register> regs;
+    return regs;
+}
+
 };
