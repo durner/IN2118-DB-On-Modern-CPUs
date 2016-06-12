@@ -67,7 +67,10 @@ void HashJoin::open() {
     }
 }
 
-void HashJoin::close() {}
+void HashJoin::close() {
+    _input_left->close();
+    _input_right->close();
+}
 bool HashJoin::next() {
     return false;
 }
