@@ -1,6 +1,5 @@
 #include "operators.hpp"
 
-
 namespace IN2118 {
 
 void Print::open() {
@@ -107,10 +106,10 @@ bool HashJoin::next() {
             std::vector<Register> left_vector = it->second;
             size_t size = left_vector.size() + regs.size();
             // store current output
-            output = std::vector<Register>();
-            output.reserve(size);
-            output.insert(output.end(), left_vector.begin(), left_vector.end());
-            output.insert(output.end(), regs.begin(), regs.end());
+            _output = std::vector<Register>();
+            _output.reserve(size);
+            _output.insert(_output.end(), left_vector.begin(), left_vector.end());
+            _output.insert(_output.end(), regs.begin(), regs.end());
             return true;
         }
     }
@@ -119,7 +118,7 @@ bool HashJoin::next() {
 }
 
 std::vector<Register> HashJoin::getOutput() {
-    return output;
+    return _output;
 }
 
 };

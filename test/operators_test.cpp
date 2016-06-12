@@ -58,6 +58,24 @@ int main(int argc, char** argv) {
         }
     }
 
+    // Selection
+    {
+        TableScan scan_small_relation{small_relation, 100, 4};
+        Selection<uint64_t> selection(&scan_small_relation, 1, 102);
+        std::stringstream output;
+        Print selection_printer(&selection, &output);
+        selection_printer.open();
+        while (selection_printer.next()) {
+        }
+        selection_printer.close();
+        for (size_t j = 0; j < 4; j++) {
+            uint64_t value;
+            output >> value;
+            assert(value == 100 + j + 1);
+        }
+    }
+
+
     // HashJoin
     {
         TableScan scan_small_relation{small_relation, 100, 4};

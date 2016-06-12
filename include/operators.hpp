@@ -86,13 +86,52 @@ public:
     virtual void close();
 };
 
+template<typename T>
+class Selection : public Operator {
+private:
+    Operator* _input;
+    unsigned _register;
+    Register _constant;
+    std::vector<Register> _output;
+
+public:
+    Selection(Operator* input, unsigned reg, T constant)
+        : _input(input)
+        , _register(reg)
+        , _constant(Register::from_bytes(reinterpret_cast<const char*>(&constant)))
+    {
+    }
+
+    virtual void open() {
+        _input->open();
+    }
+    
+    virtual bool next() {
+        while(_input->next()) {
+            _output = _input->getOutput();
+            if(_constant == _output[_register]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    std::vector<Register> getOutput() {
+        return _output;
+    }
+
+    virtual void close() {
+        _input->close();
+    }
+};
+
 class HashJoin : public Operator {
 private:
     Operator* _input_left;
     Operator* _input_right;
     unsigned _register_left;
     unsigned _register_right;
-    std::vector<Register> output;
+    std::vector<Register> _output;
     std::unordered_multimap<Register, std::vector<Register>> map;
 
 public:
