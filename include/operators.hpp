@@ -92,6 +92,7 @@ private:
     Operator* _input_right;
     unsigned _register_left;
     unsigned _register_right;
+    std::vector<Register> output;
     std::unordered_multimap<Register, std::vector<Register>> map;
 
 public:

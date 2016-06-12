@@ -69,6 +69,15 @@ int main(int argc, char** argv) {
         while (hashjoin_printer.next()) {
         }
         hashjoin_printer.close();
+        for (size_t i = 0; i < 100; i++) {
+            for (size_t k = 0; k < 2; k++) {
+                for (size_t j = 0; j < 4; j++) {
+                    uint64_t value;
+                    output >> value;
+                    assert(value == 100 * (i + 1) + j + 1);
+                }
+            }
+        }
     }
 
     delete[] small_relation;

@@ -94,13 +94,32 @@ void HashJoin::close() {
     _input_left->close();
     _input_right->close();
 }
+
 bool HashJoin::next() {
+    // run over right side until we find a match
+    while (_input_right->next()) {
+        // select element that is used for probing
+        std::vector<Register> regs = _input_right->getOutput();
+        Register right_register = regs[_register_right];
+        std::unordered_map<Register, std::vector<Register>>::iterator it = map.find(right_register);
+        // probing successful
+        if (it != map.end()) {
+            std::vector<Register> left_vector = it->second;
+            size_t size = left_vector.size() + regs.size();
+            // store current output
+            output = std::vector<Register>();
+            output.reserve(size);
+            output.insert(output.end(), left_vector.begin(), left_vector.end());
+            output.insert(output.end(), regs.begin(), regs.end());
+            return true;
+        }
+    }
+    // end of right table
     return false;
 }
 
 std::vector<Register> HashJoin::getOutput() {
-    std::vector<Register> regs;
-    return regs;
+    return output;
 }
 
 };
