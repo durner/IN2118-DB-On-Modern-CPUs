@@ -68,6 +68,24 @@ public:
     virtual void close();
 };
 
+class Projection : public Operator {
+private:
+    Operator* input;
+    std::vector<size_t> register_ids;
+
+public:
+    Projection(Operator* input, const std::vector<size_t> register_ids)
+        : input(input)
+        , register_ids(register_ids)
+    {
+    }
+
+    virtual void open();
+    virtual bool next();
+    std::vector<Register> getOutput();
+    virtual void close();
+};
+
 class HashJoin : public Operator {
 private:
     Operator* _input_left;

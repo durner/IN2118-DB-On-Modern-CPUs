@@ -56,6 +56,29 @@ std::vector<Register> TableScan::getOutput() {
 void TableScan::close() {
 }
 
+
+void Projection::open() {
+    input->open();
+}
+
+bool Projection::next() {
+    return input->next();
+}
+
+std::vector<Register> Projection::getOutput() {
+    auto input_regs = input->getOutput();
+    std::vector<Register> output;
+    output.reserve(register_ids.size());
+    for (const auto reg_id : register_ids) {
+        output.push_back(input_regs.at(reg_id));
+    }
+    return output;
+}
+
+void Projection::close() {
+    input->close();
+}
+
 void HashJoin::open() {
     _input_left->open();
     _input_right->open();
